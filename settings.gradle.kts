@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AquaBubbleClicker"
 include(":app")
+include(":shared")
