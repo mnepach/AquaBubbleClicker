@@ -1,4 +1,4 @@
-package com.example.aquabubbleclicker.shared.repository
+package com.example.aquabubbleclicker.data.repository
 
 import com.example.aquabubbleclicker.data.model.Bubble
 import com.example.aquabubbleclicker.shared.GameLogic

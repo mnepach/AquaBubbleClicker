@@ -2,28 +2,32 @@ package com.example.aquabubbleclicker.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.aquabubbleclicker.shared.repository.GameRepository
-import com.example.aquabubbleclicker.shared.usecase.GenerateBubbleUseCase
-import com.example.aquabubbleclicker.shared.BubbleData
+import com.example.aquabubbleclicker.data.model.Bubble
+import com.example.aquabubbleclicker.data.repository.GameRepository
+import com.example.aquabubbleclicker.domain.usecase.GenerateBubbleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel следует MVVM архитектуре
+ * Использует Kotlin Coroutines для асинхронности
+ *
+ * Reference: https://habr.com/ru/articles/721084/ (Part 4: MVVM)
+ * Reference: https://nuancesprog.ru/p/21091/ (Coroutines)
+ */
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val repository: GameRepository,
     private val generateBubbleUseCase: GenerateBubbleUseCase
 ) : ViewModel() {
 
-    private val _bubbles = MutableStateFlow<List<BubbleData>>(emptyList())
-    val bubbles: StateFlow<List<BubbleData>> = _bubbles.asStateFlow()
+    private val _bubbles = MutableStateFlow<List<Bubble>>(emptyList())
+    val bubbles: StateFlow<List<Bubble>> = _bubbles.asStateFlow()
 
     val score: StateFlow<Int> = repository.score
-    val highScore: StateFlow<Int> = repository.highScore
 
     private var bubbleIdCounter = 0
     private var screenWidth = 0f
@@ -44,6 +48,7 @@ class GameViewModel @Inject constructor(
         isGenerating = true
 
         viewModelScope.launch {
+            // Сначала генерируем несколько пузырьков для начального заполнения
             repeat(5) {
                 val newBubble = generateBubbleUseCase(
                     bubbleIdCounter++,
@@ -54,6 +59,7 @@ class GameViewModel @Inject constructor(
                 delay(200)
             }
 
+            // Затем продолжаем генерацию
             while (true) {
                 delay(800)
                 val newBubble = generateBubbleUseCase(
@@ -74,21 +80,16 @@ class GameViewModel @Inject constructor(
             while (true) {
                 delay(16) // ~60 FPS
                 _bubbles.value = _bubbles.value
-                    .map { bubble ->
-                        val newY = gameLogic.calculateBubbleMovement(bubble.y, bubble.speed, 3f)
-                        bubble.copy(y = newY)
-                    }
-                    .filter { !gameLogic.isOffScreen(it.y) }
+                    .map { it.copy(y = it.y - it.speed * 3) }
+                    .filter { it.y > -200f }
             }
         }
     }
 
-    fun onBubbleClick(bubble: BubbleData) {
+    fun onBubbleClick(bubble: Bubble) {
         viewModelScope.launch {
             repository.incrementScore()
             _bubbles.value = _bubbles.value.filter { it.id != bubble.id }
         }
     }
-
-    private val gameLogic = GameLogic() // Temporary for movement logic
 }

@@ -1,6 +1,6 @@
 package com.example.aquabubbleclicker.di
 
-import com.example.aquabubbleclicker.shared.repository.GameRepository
+import com.example.aquabubbleclicker.data.repository.GameRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

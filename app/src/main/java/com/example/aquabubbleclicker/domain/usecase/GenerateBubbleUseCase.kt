@@ -1,7 +1,7 @@
-package com.example.aquabubbleclicker.shared.usecase
+package com.example.aquabubbleclicker.domain.usecase
 
 import com.example.aquabubbleclicker.data.model.Bubble
-import com.example.aquabubbleclicker.shared.repository.GameRepository
+import com.example.aquabubbleclicker.data.repository.GameRepository
 import javax.inject.Inject
 
 class GenerateBubbleUseCase @Inject constructor(
