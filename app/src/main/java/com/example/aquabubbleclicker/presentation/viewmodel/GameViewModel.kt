@@ -58,7 +58,9 @@ class GameViewModel @Inject constructor(
     }
 
     fun onBubbleClick(bubble: Bubble) {
-        repository.incrementScore()
-        _bubbles.value = _bubbles.value.filter { it.id != bubble.id }
+        viewModelScope.launch {
+            repository.incrementScore()
+            _bubbles.value = _bubbles.value.filter { it.id != bubble.id }
+        }
     }
 }
