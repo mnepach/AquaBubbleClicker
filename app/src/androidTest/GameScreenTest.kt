@@ -1,8 +1,7 @@
 package com.example.aquabubbleclicker
 
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createComposeRule
-import com.example.aquabubbleclicker.presentation.ui.GameScreen
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.example.aquabubbleclicker.ui.theme.AquaBubbleTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -17,7 +16,7 @@ class GameScreenTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Before
     fun setup() {
@@ -26,12 +25,6 @@ class GameScreenTest {
 
     @Test
     fun gameScreen_displaysScore() {
-        composeTestRule.setContent {
-            AquaBubbleTheme {
-                GameScreen()
-            }
-        }
-
         composeTestRule.onNodeWithText("Score: 0").assertIsDisplayed()
     }
 }

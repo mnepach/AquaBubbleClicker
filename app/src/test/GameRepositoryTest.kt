@@ -4,6 +4,7 @@ import com.example.aquabubbleclicker.data.repository.GameRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -30,9 +31,9 @@ class GameRepositoryTest {
     }
 
     @Test
-    fun `generateBubble creates valid bubble`() {
+    fun `generateBubble creates valid bubble`() = runTest {
         val bubble = repository.generateBubble(1, 1000f, 2000f)
         assertEquals(1, bubble.id)
-        assert(bubble.size in 40f..100f)
+        assertTrue(bubble.size in 40f..100f)
     }
 }

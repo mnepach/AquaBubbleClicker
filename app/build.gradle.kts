@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.aquabubbleclicker"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "com.example.aquabubbleclicker.HiltTestRunner"
@@ -62,7 +62,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     implementation("androidx.activity:activity-compose:1.11.0")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
 
     // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2025.10.01"))
